@@ -575,7 +575,7 @@
     const data = Object.fromEntries(new FormData(this));
     data.services = [...this.querySelectorAll('input[name="services"]:checked')].map(el => el.value);
 
-    const ACTION = 'https://script.google.com/macros/s/AKfycbz6wU9VF4zNT64z1T74oaJ4TOVrnBkrucmAnXiA4_D__On8H56xzc6oMS1zGXQMrlQw/exec';
+    const ACTION = 'https://script.google.com/macros/s/AKfycbyMG--sT6HugV1PSIIrg45P50W3oop9b54JQ4p20Ng/exec';
 
     try {
       await fetch(ACTION, {
