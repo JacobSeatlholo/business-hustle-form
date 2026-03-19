@@ -575,15 +575,46 @@
     const data = Object.fromEntries(new FormData(this));
     data.services = [...this.querySelectorAll('input[name="services"]:checked')].map(el => el.value);
 
-    const ACTION = 'https://script.google.com/macros/s/AKfycbyMG--sT6HugV1PSIIrg45P50W3oop9b54JQ4p20Ng/exec';
+    const ACTION = 'https://script.google.com/macros/s/AKfycbyjYgX381azWdOEQW5ZZ3I3Al8nTewBonJeqnBj77RU5knMNA37FBtc4AF96IeGqAiZ/exec';
 
+    // iframe + hidden form — most reliable method for Google Apps Script
+    // from static hosting (avoids all CORS/no-cors issues)
     try {
-      await fetch(ACTION, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
+      const iframe = document.createElement('iframe');
+      iframe.name = 'hidden-submit';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+
+      const hiddenForm = document.createElement('form');
+      hiddenForm.method = 'POST';
+      hiddenForm.action = ACTION;
+      hiddenForm.target = 'hidden-submit';
+
+      const payload = {
+        first_name: data.first_name || '',
+        last_name:  data.last_name  || '',
+        email:      data.email      || '',
+        phone:      data.phone      || '',
+        company:    data.company    || '',
+        stage:      data.stage      || '',
+        services:   (data.services  || []).join(', '),
+        message:    data.message    || ''
+      };
+
+      Object.entries(payload).forEach(([key, val]) => {
+        const input = document.createElement('input');
+        input.type  = 'hidden';
+        input.name  = key;
+        input.value = val;
+        hiddenForm.appendChild(input);
       });
+
+      document.body.appendChild(hiddenForm);
+      hiddenForm.submit();
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+        document.body.removeChild(hiddenForm);
+      }, 3000);
     } catch (_) {}
 
     this.style.display = 'none';
