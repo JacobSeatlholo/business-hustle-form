@@ -575,7 +575,7 @@
     const data = Object.fromEntries(new FormData(this));
     data.services = [...this.querySelectorAll('input[name="services"]:checked')].map(el => el.value);
 
-    const ACTION = 'https://script.google.com/macros/s/AKfycbyjYgX381azWdOEQW5ZZ3I3Al8nTewBonJeqnBj77RU5knMNA37FBtc4AF96IeGqAiZ/exec';
+    const ACTION = 'https://script.google.com/macros/s/AKfycbz1z5yd-nBypQdVWt54mYjmzOoRr2yjunO_WnjKhb6vn11LBmEcHbRgzqCJrjkFDGWJ/exec';
 
     // iframe + hidden form — most reliable method for Google Apps Script
     // from static hosting (avoids all CORS/no-cors issues)
